@@ -31,15 +31,11 @@ class Users extends BaseController
     public function create()
     {
         $data = $this->userData();
-        $data['password'] = (string) $this->request->getPost('password');
-        $data['password_confirm'] = (string) $this->request->getPost('password_confirm');
 
-        if (! $this->validateData($data, $this->userRules(null, true))) {
+        if (! $this->validateData($data, $this->userRules())) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        unset($data['password_confirm']);
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $data['created_at'] = date('Y-m-d H:i:s');
         (new UserModel())->insert($data);
 
@@ -73,20 +69,9 @@ class Users extends BaseController
         }
 
         $data = $this->userData();
-        $newPassword = (string) $this->request->getPost('password');
 
-        if ($newPassword !== '') {
-            $data['password'] = $newPassword;
-            $data['password_confirm'] = (string) $this->request->getPost('password_confirm');
-        }
-
-        if (! $this->validateData($data, $this->userRules($id, $newPassword !== ''))) {
+        if (! $this->validateData($data, $this->userRules($id))) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        if ($newPassword !== '') {
-            unset($data['password_confirm']);
-            $data['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
         }
 
         $avatar = $this->request->getFile('avatar');
@@ -126,13 +111,13 @@ class Users extends BaseController
         ];
     }
 
-    private function userRules(?int $id = null, bool $includePassword = false): array
+    private function userRules(?int $id = null): array
     {
         $uniqueRule = $id === null
             ? 'is_unique[users.username]'
             : "is_unique[users.username,id,{$id}]";
 
-        $rules = [
+        return [
             'username' => [
                 'label'  => 'Username',
                 'rules'  => "required|max_length[50]|alpha_numeric_punct|{$uniqueRule}",
@@ -147,20 +132,6 @@ class Users extends BaseController
                 'errors' => ['required' => 'Full name is required.'],
             ],
         ];
-
-        if ($includePassword) {
-            $rules['password'] = [
-                'label' => 'Password',
-                'rules' => 'required|min_length[8]',
-            ];
-            $rules['password_confirm'] = [
-                'label' => 'Confirm password',
-                'rules' => 'required|matches[password]',
-                'errors' => ['matches' => 'The password confirmation does not match.'],
-            ];
-        }
-
-        return $rules;
     }
 
     private function avatarRules(): array

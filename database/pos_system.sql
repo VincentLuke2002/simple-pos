@@ -19,7 +19,6 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     full_name VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
     avatar VARCHAR(255) NULL,
     created_at DATETIME NOT NULL
 );
@@ -31,9 +30,9 @@ INSERT INTO customers (full_name, email, phone, created_at) VALUES
     ('Daniel Lim', 'daniel.lim@example.com', '0920-456-7890', NOW()),
     ('Sofia Mendoza', 'sofia.mendoza@example.com', '0921-567-8901', NOW());
 
-INSERT INTO users (username, full_name, password, avatar, created_at) VALUES
-    ('admin01', 'Andrea Flores', '$2y$12$6sPdbPsT9xwDFSI.9Xp3Pe0yqCOz0bhUqcYsDZ.3AshImQbhYk3K.', NULL, NOW()),
-    ('cashier01', 'Paolo Garcia', '$2y$12$6sPdbPsT9xwDFSI.9Xp3Pe0yqCOz0bhUqcYsDZ.3AshImQbhYk3K.', NULL, NOW()),
-    ('cashier02', 'Mika Torres', '$2y$12$6sPdbPsT9xwDFSI.9Xp3Pe0yqCOz0bhUqcYsDZ.3AshImQbhYk3K.', NULL, NOW()),
-    ('manager01', 'Carlo Villanueva', '$2y$12$6sPdbPsT9xwDFSI.9Xp3Pe0yqCOz0bhUqcYsDZ.3AshImQbhYk3K.', NULL, NOW()),
-    ('stock01', 'Nina Ramos', '$2y$12$6sPdbPsT9xwDFSI.9Xp3Pe0yqCOz0bhUqcYsDZ.3AshImQbhYk3K.', NULL, NOW());
+INSERT INTO users (username, full_name, avatar, created_at) VALUES
+    ('admin01', 'Andrea Flores', NULL, NOW()),
+    ('cashier01', 'Paolo Garcia', NULL, NOW()),
+    ('cashier02', 'Mika Torres', NULL, NOW()),
+    ('manager01', 'Carlo Villanueva', NULL, NOW()),
+    ('stock01', 'Nina Ramos', NULL, NOW());

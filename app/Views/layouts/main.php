@@ -113,7 +113,7 @@
         .field { display: flex; flex-direction: column; gap: .42rem; }
         .field.full { grid-column: 1 / -1; }
         label { color: var(--navy); font-size: .9rem; font-weight: 750; }
-        input[type="text"], input[type="email"], input[type="password"], input[type="file"] { width: 100%; padding: .78rem .9rem; border: 1px solid #d0d5dd; border-radius: .7rem; background: white; color: var(--ink); font: inherit; outline: none; transition: border .15s ease, box-shadow .15s ease; }
+        input[type="text"], input[type="email"], input[type="file"] { width: 100%; padding: .78rem .9rem; border: 1px solid #d0d5dd; border-radius: .7rem; background: white; color: var(--ink); font: inherit; outline: none; transition: border .15s ease, box-shadow .15s ease; }
         input:focus { border-color: #818cf8; box-shadow: 0 0 0 4px rgba(99, 102, 241, .12); }
         .hint { margin: 0; color: var(--muted); font-size: .82rem; }
         .form-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
@@ -123,15 +123,6 @@
         .errors ul { margin: .35rem 0 0; padding-left: 1.25rem; }
         .flash { border-color: #abefc6; background: var(--success-soft); color: var(--success); font-weight: 700; }
         .current-avatar { display: flex; align-items: center; gap: .85rem; padding: .8rem; border: 1px solid var(--line); border-radius: .8rem; background: #f9fafb; }
-        .nav-user { display: flex; align-items: center; gap: .7rem; margin-left: .35rem; }
-        .user-name { color: #e0e7ff; font-size: .85rem; font-weight: 700; }
-        .logout-form { margin: 0; }
-        .logout-button { padding: .48rem .72rem; border: 1px solid rgba(255, 255, 255, .18); border-radius: .6rem; background: transparent; color: white; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
-        .logout-button:hover { background: rgba(255, 255, 255, .1); }
-        .login-shell { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: clamp(2rem, 7vw, 6rem); min-height: 60vh; }
-        .login-card { margin-top: 0; }
-        .one-column { grid-template-columns: 1fr; }
-        .login-button { width: 100%; margin-top: 1.5rem; }
 
         footer { padding: 1.4rem 1rem; border-top: 1px solid var(--line); color: var(--muted); text-align: center; font-size: .85rem; }
 
@@ -143,8 +134,6 @@
             .page-heading { align-items: flex-start; flex-direction: column; }
             .form-grid { grid-template-columns: 1fr; }
             .field.full { grid-column: auto; }
-            .login-shell { grid-template-columns: 1fr; min-height: auto; }
-            .nav-user { width: 100%; justify-content: space-between; margin: .35rem 0 0; }
         }
     </style>
 </head>
@@ -155,19 +144,8 @@
             <nav aria-label="Main navigation">
                 <a class="<?= url_is('/') ? 'active' : '' ?>" href="<?= site_url('/') ?>">Home</a>
                 <a class="<?= url_is('about') ? 'active' : '' ?>" href="<?= site_url('about') ?>">About</a>
-                <?php if (session()->get('isLoggedIn')): ?>
-                    <a class="<?= url_is('customers*') ? 'active' : '' ?>" href="<?= site_url('customers') ?>">Customers</a>
-                    <a class="<?= url_is('users*') ? 'active' : '' ?>" href="<?= site_url('users') ?>">Users</a>
-                    <span class="nav-user">
-                        <span class="user-name"><?= esc(session('fullName')) ?></span>
-                        <form class="logout-form" action="<?= site_url('logout') ?>" method="post">
-                            <?= csrf_field() ?>
-                            <button class="logout-button" type="submit">Log out</button>
-                        </form>
-                    </span>
-                <?php else: ?>
-                    <a class="<?= url_is('login') ? 'active' : '' ?>" href="<?= site_url('login') ?>">Login</a>
-                <?php endif ?>
+                <a class="<?= url_is('customers*') ? 'active' : '' ?>" href="<?= site_url('customers') ?>">Customers</a>
+                <a class="<?= url_is('users*') ? 'active' : '' ?>" href="<?= site_url('users') ?>">Users</a>
             </nav>
         </div>
     </header>
@@ -175,10 +153,6 @@
     <main>
         <?php if ($message = session()->getFlashdata('success')): ?>
             <div class="flash" role="status"><?= esc($message) ?></div>
-        <?php endif ?>
-
-        <?php if ($message = session()->getFlashdata('error')): ?>
-            <div class="errors" role="alert"><?= esc($message) ?></div>
         <?php endif ?>
 
         <?= $this->renderSection('content') ?>
