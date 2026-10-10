@@ -9,6 +9,7 @@ class PosSeeder extends Seeder
     public function run()
     {
         $createdAt = date('Y-m-d H:i:s');
+        $password = password_hash('Password123!', PASSWORD_DEFAULT);
 
         $this->db->table('customers')->insertBatch([
             ['full_name' => 'Alyssa Reyes', 'email' => 'alyssa.reyes@example.com', 'phone' => '0917-123-4567', 'created_at' => $createdAt],
@@ -19,12 +20,11 @@ class PosSeeder extends Seeder
         ]);
 
         $this->db->table('users')->insertBatch([
-            ['username' => 'admin01', 'full_name' => 'Andrea Flores', 'created_at' => $createdAt],
-            ['username' => 'cashier01', 'full_name' => 'Paolo Garcia', 'created_at' => $createdAt],
-            ['username' => 'cashier02', 'full_name' => 'Mika Torres', 'created_at' => $createdAt],
-            ['username' => 'manager01', 'full_name' => 'Carlo Villanueva', 'created_at' => $createdAt],
-            ['username' => 'stock01', 'full_name' => 'Nina Ramos', 'created_at' => $createdAt],
+            ['username' => 'admin01', 'full_name' => 'Andrea Flores', 'password' => $password, 'created_at' => $createdAt],
+            ['username' => 'cashier01', 'full_name' => 'Paolo Garcia', 'password' => $password, 'created_at' => $createdAt],
+            ['username' => 'cashier02', 'full_name' => 'Mika Torres', 'password' => $password, 'created_at' => $createdAt],
+            ['username' => 'manager01', 'full_name' => 'Carlo Villanueva', 'password' => $password, 'created_at' => $createdAt],
+            ['username' => 'stock01', 'full_name' => 'Nina Ramos', 'password' => $password, 'created_at' => $createdAt],
         ]);
     }
 }
-

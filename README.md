@@ -1,6 +1,6 @@
 # SimplePOS CodeIgniter 4
 
-SimplePOS is a CodeIgniter 4 laboratory project. Customer and user records are stored in MySQL and managed through validated create and edit forms. User accounts also support prepared profile-picture uploads.
+SimplePOS is a CodeIgniter 4 laboratory project. Customer and user records are stored in MySQL and managed through validated create and edit forms. User accounts support profile-picture uploads, hashed passwords, session login, and protected management pages.
 
 ## Requirements
 
@@ -31,10 +31,19 @@ php spark serve
 
 Open `http://localhost:8080` in a browser.
 
+## Demo login
+
+- Username: `admin01`
+- Password: `Password123!`
+
+All five sample users use the same demo password. Passwords are stored as secure hashes, never as plain text.
+
 ## Routes
 
 - `/` - landing page
 - `/about` - project information
+- `/login` - staff login page
+- `/logout` - ends the current session
 - `/customers` - database-backed customer accounts
 - `/customers/new` - create a customer account
 - `/customers/{id}/edit` - edit a customer account
@@ -46,9 +55,13 @@ Open `http://localhost:8080` in a browser.
 
 - `app/Models/CustomerModel.php` maps to the `customers` table.
 - `app/Models/UserModel.php` maps to the `users` table.
+- `app/Controllers/Auth.php` verifies passwords and manages login and logout sessions.
+- `app/Filters/AuthFilter.php` protects all customer and user management routes.
 - Controllers validate create and edit forms before inserting or updating records.
 - Customer forms require a full name and valid email address.
 - User forms require a unique username and full name.
+- New users require a password of at least eight characters. Passwords are hashed with `password_hash()` before they are saved.
+- Login checks the stored hash with `password_verify()` and regenerates the session ID after successful authentication.
 - User edit forms accept JPG or PNG avatars up to 2 MB and prepare a 240 × 240 image.
 - Only the randomized avatar filename is stored in MySQL; files are saved under `public/uploads/avatars`.
 - Views display records with `foreach` loops and use a placeholder when a user has no avatar.

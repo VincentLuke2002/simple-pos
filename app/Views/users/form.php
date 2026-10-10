@@ -28,6 +28,15 @@
                 <label for="full_name">Full name *</label>
                 <input id="full_name" name="full_name" type="text" maxlength="100" value="<?= esc(old('full_name', $user['full_name'] ?? ''), 'attr') ?>" required>
             </div>
+            <div class="field">
+                <label for="password">Password<?= $isEdit ? '' : ' *' ?></label>
+                <input id="password" name="password" type="password" minlength="8" autocomplete="new-password"<?= $isEdit ? '' : ' required' ?>>
+                <?php if ($isEdit): ?><p class="hint">Leave blank to keep the current password.</p><?php endif ?>
+            </div>
+            <div class="field">
+                <label for="password_confirm">Confirm password<?= $isEdit ? '' : ' *' ?></label>
+                <input id="password_confirm" name="password_confirm" type="password" minlength="8" autocomplete="new-password"<?= $isEdit ? '' : ' required' ?>>
+            </div>
 
             <?php if ($isEdit): ?>
                 <?php $currentAvatar = ($user['avatar'] ?? null) ?: 'placeholder.svg'; ?>
@@ -49,4 +58,3 @@
     </form>
 </section>
 <?= $this->endSection() ?>
-
