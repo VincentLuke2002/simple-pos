@@ -1,0 +1,52 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+<p class="eyebrow">User form</p>
+<h1><?= esc($heading) ?></h1>
+<p class="lead">Enter the account details below. Usernames must be unique.</p>
+
+<section class="form-card">
+    <?php if ($errors = session('errors')): ?>
+        <div class="errors" role="alert">
+            <strong>Please check the form.</strong>
+            <ul>
+                <?php foreach ($errors as $error): ?>
+                    <li><?= esc($error) ?></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif ?>
+
+    <form action="<?= esc($formAction, 'attr') ?>" method="post"<?= $isEdit ? ' enctype="multipart/form-data"' : '' ?>>
+        <?= csrf_field() ?>
+        <div class="form-grid">
+            <div class="field">
+                <label for="username">Username *</label>
+                <input id="username" name="username" type="text" maxlength="50" value="<?= esc(old('username', $user['username'] ?? ''), 'attr') ?>" required>
+            </div>
+            <div class="field">
+                <label for="full_name">Full name *</label>
+                <input id="full_name" name="full_name" type="text" maxlength="100" value="<?= esc(old('full_name', $user['full_name'] ?? ''), 'attr') ?>" required>
+            </div>
+
+            <?php if ($isEdit): ?>
+                <?php $currentAvatar = ($user['avatar'] ?? null) ?: 'placeholder.svg'; ?>
+                <div class="field full">
+                    <label for="avatar">Profile picture</label>
+                    <div class="current-avatar">
+                        <img class="avatar" src="<?= base_url('uploads/avatars/' . rawurlencode($currentAvatar)) ?>" alt="Current profile picture">
+                        <span class="hint">Current profile picture</span>
+                    </div>
+                    <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png">
+                    <p class="hint">JPG or PNG only. Maximum file size: 2 MB. The image will be prepared as a 240 × 240 thumbnail.</p>
+                </div>
+            <?php endif ?>
+        </div>
+        <div class="form-actions">
+            <button class="button" type="submit">Save user</button>
+            <a class="button secondary" href="<?= site_url('users') ?>">Cancel</a>
+        </div>
+    </form>
+</section>
+<?= $this->endSection() ?>
+
